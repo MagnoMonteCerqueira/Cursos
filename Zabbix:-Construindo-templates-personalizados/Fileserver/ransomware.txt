@@ -2299,3 +2299,6 @@ _ryp
 *.blocatto
 *.8lock8
 *.777
+Fedasot
+*.Fedasot
+*.Fedasot.*
