@@ -12,4 +12,8 @@ Repositório público de templates, scripts, confs e materiais relacionados com 
 OBS: Para detalhes sobre o uso de cada monitoramento e fundamental estar matriculado no curso relacionado, consulte o arquivo LEIA-ME.pdf em casos de duvidas!
 
 
+1º Zabbix: Construindo templates personalizados.
+
+
+
 
