@@ -12,8 +12,9 @@ Repositório público de templates, scripts, confs e materiais relacionados com 
 OBS: Para detalhes sobre o uso de cada monitoramento e fundamental estar matriculado no curso relacionado, consulte o arquivo LEIA-ME.pdf em casos de duvidas!
 
 
-1º Zabbix: Construindo templates personalizados.
+# Nossos cursos.
+
+Udemy: [1º Zabbix: Construindo templates personalizados.](https://www.udemy.com/zabbix-construindo-templates-personalizados/?couponCode=CURSOPROFISSIONAL)
 
 
-
-
+Udemy: [2º Zabbix: Construindo templates personalizados (Anti-Virus)](https://www.udemy.com/zabbix-construindo-templates-personalizados-anti-virus/?couponCode=ZABBIX1990)
