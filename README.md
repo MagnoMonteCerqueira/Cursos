@@ -1,15 +1,15 @@
 ![alt tag](https://raw.githubusercontent.com/MagnoMonteCerqueira/Cursos/master/Zabbix%3A-Construindo-templates-personalizados/screenshots/zabbix.jpg)
 
 #
-Autor: Magno Monte Cerqueira\
+Autor: Magno Monte Cerqueira
 #
-E-Mail: magnopeem@gmail.com\
+E-Mail: magnopeem@gmail.com
 #
-Telegram: @Magnopeem\
+Telegram: @Magnopeem
 #
-Skype: magnopeem_rj@hotmail.com\
+Skype: magnopeem_rj@hotmail.com
 #
-Linkdln: https://br.linkedin.com/in/magno-monte-cerqueira-976b1587\
+Linkdln: https://br.linkedin.com/in/magno-monte-cerqueira-976b1587
 #
 Zabbix Share: [https://share.zabbix.com/owner/magnopeem](https://share.zabbix.com/search?searchword=magnopeem&search_cat=1)
 #
