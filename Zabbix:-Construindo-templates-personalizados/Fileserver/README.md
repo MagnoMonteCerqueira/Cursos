@@ -1,2 +1,2 @@
 
-<iframe src="https://raw.githubusercontent.com/MagnoMonteCerqueira/Cursos/master/Zabbix%3A-Construindo-templates-personalizados/Fileserver/MONITORAMENTO%20SERVIDOR%20DE%20ARQUIVOS%20SHARE%20V.1.pdf" width="760" height="500" type='application/pdf'/>
+<iframe src="https://raw.githubusercontent.com/MagnoMonteCerqueira/Cursos/master/Zabbix%3A-Construindo-templates-personalizados/Fileserver/MONITORAMENTO%20SERVIDOR%20DE%20ARQUIVOS%20SHARE%20V.1.pdf" width="760" height="500" type='application/pdf'/iframe>
