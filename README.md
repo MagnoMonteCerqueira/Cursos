@@ -29,3 +29,5 @@ Udemy: [1º Zabbix: Construindo templates personalizados.](https://www.udemy.com
 
 
 Udemy: [2º Zabbix: Construindo templates personalizados (Anti-Virus)](https://www.udemy.com/zabbix-construindo-templates-personalizados-anti-virus/?couponCode=ZABBIX1990)
+
+Udemy: [3º Zabbix: Construindo templates personalizados (SMBShare)](https://www.udemy.com/course/3o-zabbix-construindo-templates-personalizados-smbshare/?referralCode=133798C4480077ACFFBD)
