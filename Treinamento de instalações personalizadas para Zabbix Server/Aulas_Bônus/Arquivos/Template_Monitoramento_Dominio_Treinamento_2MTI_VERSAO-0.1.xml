@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>4.4</version>
+    <date>2020-04-01T05:52:33Z</date>
+    <groups>
+        <group>
+            <name>Template/SSL</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template_Monitoramento_Dominio_Treinamento_2MTI_VERSAO-0.1</template>
+            <name>Template_Monitoramento_Dominio_Treinamento_2MTI_VERSAO-0.1</name>
+            <description>Template do Treinamento de instalações personalizadas para Zabbix Server.&#13;
+&#13;
+Site: &#13;
+&#13;
+https://www.2mti.com.br/treinamentos/nossos-treinamentos/</description>
+            <groups>
+                <group>
+                    <name>Template/SSL</name>
+                </group>
+            </groups>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Descoberta LLD Dominio</name>
+                    <key>dominio.discovery[DISCOVERYDOMAIN,&quot;{HOSTNAME}&quot;]</key>
+                    <delay>84600s</delay>
+                    <lifetime>0d</lifetime>
+                    <description>Template do Treinamento de instalações personalizadas para Zabbix Server.&#13;
+&#13;
+Site: &#13;
+&#13;
+https://www.2mti.com.br/treinamentos/nossos-treinamentos/</description>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Dias para expirar o dominio</name>
+                            <key>dominio.discovery[INFODOMAINEXP,{#DOMINIO}]</key>
+                            <delay>30s</delay>
+                            <history>60d</history>
+                            <trends>90d</trends>
+                            <units>Dias</units>
+                            <description>Template do Treinamento de instalações personalizadas para Zabbix Server.&#13;
+&#13;
+Site: &#13;
+&#13;
+https://www.2mti.com.br/treinamentos/nossos-treinamentos/</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>Informacoes do dominio {#DOMINIO}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last()}&lt;200</expression>
+                                    <name>Falta 200 dias para expirar o dominio {#DOMINIO}</name>
+                                    <priority>HIGH</priority>
+                                    <description>Template do Treinamento de instalações personalizadas para Zabbix Server.&#13;
+&#13;
+Site: &#13;
+&#13;
+https://www.2mti.com.br/treinamentos/nossos-treinamentos/</description>
+                                    <manual_close>YES</manual_close>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <name>Informacoes do dominio {#DOMINIO}</name>
+                            <graph_items>
+                                <graph_item>
+                                    <color>1A7C11</color>
+                                    <item>
+                                        <host>Template_Monitoramento_Dominio_Treinamento_2MTI_VERSAO-0.1</host>
+                                        <key>dominio.discovery[INFODOMAINEXP,{#DOMINIO}]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+        </template>
+    </templates>
+</zabbix_export>
