@@ -49,7 +49,7 @@
 #
 ############################################################################################
 echo " ** ANALIZANDO OS PARAMETROS MYSQL ** "
-DB_NOME='mysql'
+DB_NOME='zabbix'
 DB_USUARIO='root'
 DB_PASS=''
 DB_PARAMETRO='--add-drop-table --add-locks --extended-insert --single-transaction -quick'
@@ -57,7 +57,7 @@ DB_PARAMETRO='--add-drop-table --add-locks --extended-insert --single-transactio
 echo " ** ANALIZANDO OS PARAMETROS DO SISTEMA  ** "
 DATE=`date +%Y-%m-%d`
 MYSQLDUMP=/usr/bin/mysqldump
-BACKUP_DIRETORIO=/tmp/mysql
+BACKUP_DIRETORIO=/tmp/
 BACKUP_NOME=zabbix-$DATE.sql
 BACKUP_TAR=zabbix-$DATE.tar
 #
@@ -65,7 +65,7 @@ echo " ** CRIANDO O BACKUP DA BASE DE DADOS $DB_NOME NO LOCAL $BACKUP_DIRETORIO 
 $MYSQLDUMP $DB_NOME $DB_PARAMETRO -u $DB_USUARIO -p$DB_PASS > $BACKUP_DIRETORIO/$BACKUP_NOME
 #
 echo " ** COMPACTANDO O BACKUP DA BASE DE DADOS $DB_NOME NO DIRETORIO $BACKUP_DIRETORIO COM NOME $BACKUP_NOME ** "
-tar tar -cjf $BACKUP_DIRETORIO/$BACKUP_TAR -C $BACKUP_DIRETORIO $BACKUP_NOME --remove-files
+tar -czvf $BACKUP_DIRETORIO/$BACKUP_TAR -C $BACKUP_DIRETORIO $BACKUP_NOME --remove-files
 #
 echo " ** EXCLUINDO OS BACKUPS ANTIGOS COM MAIS DE 30 DIAS ** "
 find $BACKUP_DIRETORIO/* -mtime +30 -delete
