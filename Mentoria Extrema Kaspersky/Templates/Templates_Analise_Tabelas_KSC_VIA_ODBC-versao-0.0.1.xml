@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>6.0</version>
+    <date>2022-07-03T00:54:02Z</date>
+    <groups>
+        <group>
+            <uuid>c998f140d3f8436c923aad88bd99a81a</uuid>
+            <name>Templates/ksc</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <uuid>27f798808e8e43298a5b915f2a577d6b</uuid>
+            <template>Templates_Analise_Tabelas_KSC_VIA_ODBC-versao-0.0.1</template>
+            <name>Templates_Analise_Tabelas_KSC_VIA_ODBC-versao-0.0.1</name>
+            <groups>
+                <group>
+                    <name>Templates/ksc</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <uuid>aa01698bb0e241e5be76c3d814f8e39e</uuid>
+                    <name>00- Descoberta raw tabelas do ksc</name>
+                    <type>ODBC</type>
+                    <key>db.odbc.get[descoberta-tabelas-ksc,{$BANCO}]</key>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <params>SELECT * FROM INFORMATION_SCHEMA.TABLES;</params>
+                    <username>{$USUARIO}</username>
+                    <password>{$SENHA}</password>
+                    <preprocessing>
+                        <step>
+                            <type>STR_REPLACE</type>
+                            <parameters>
+                                <parameter>TABLE_CATALOG</parameter>
+                                <parameter>TABLECATALOG</parameter>
+                            </parameters>
+                        </step>
+                        <step>
+                            <type>STR_REPLACE</type>
+                            <parameters>
+                                <parameter>TABLE_SCHEMA</parameter>
+                                <parameter>TABLESCHEMA</parameter>
+                            </parameters>
+                        </step>
+                        <step>
+                            <type>STR_REPLACE</type>
+                            <parameters>
+                                <parameter>TABLE_NAME</parameter>
+                                <parameter>TABLENAME</parameter>
+                            </parameters>
+                        </step>
+                        <step>
+                            <type>STR_REPLACE</type>
+                            <parameters>
+                                <parameter>TABLE_TYPE</parameter>
+                                <parameter>TABLETYPE</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <uuid>156e0249faa24663a1f87475df7a3b1b</uuid>
+                    <name>00- Descoberta raw tabelas do ksc</name>
+                    <type>DEPENDENT</type>
+                    <key>Descoberta.raw.tabelas.do.ksc</key>
+                    <delay>0</delay>
+                    <filter>
+                        <conditions>
+                            <condition>
+                                <macro>{#TABLETYPE}</macro>
+                                <value>^VIEW$</value>
+                                <operator>NOT_MATCHES_REGEX</operator>
+                                <formulaid>A</formulaid>
+                            </condition>
+                        </conditions>
+                    </filter>
+                    <lifetime>0d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>23940a30414a4a41a245f7c3e6d0f89a</uuid>
+                            <name>{#TABLECATALOG}.{#TABLESCHEMA}.{#TABLENAME}</name>
+                            <type>ODBC</type>
+                            <key>db.odbc.get[{#TABLECATALOG}.{#TABLESCHEMA}.{#TABLENAME},{$BANCO}]</key>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <params>SELECT * FROM {#TABLECATALOG}.{#TABLESCHEMA}.{#TABLENAME};</params>
+                            <username>{$USUARIO}</username>
+                            <password>{$SENHA}</password>
+                        </item_prototype>
+                    </item_prototypes>
+                    <master_item>
+                        <key>db.odbc.get[descoberta-tabelas-ksc,{$BANCO}]</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JAVASCRIPT</type>
+                            <parameters>
+                                <parameter>output = JSON.parse(value).map(function(net){
+      return {
+        &quot;{#TABLECATALOG}&quot;: net.TABLECATALOG,
+        &quot;{#TABLESCHEMA}&quot;: net.TABLESCHEMA,
+        &quot;{#TABLENAME}&quot;: net.TABLENAME,
+        &quot;{#TABLETYPE}&quot;: net.TABLETYPE
+
+}})
+
+return JSON.stringify({&quot;data&quot;: output})</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </discovery_rule>
+            </discovery_rules>
+            <macros>
+                <macro>
+                    <macro>{$BANCO}</macro>
+                    <value>KSC</value>
+                </macro>
+                <macro>
+                    <macro>{$SENHA}</macro>
+                    <value>zabbix</value>
+                </macro>
+                <macro>
+                    <macro>{$USUARIO}</macro>
+                    <value>zabbix</value>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>6.0</version>
+    <date>2022-07-03T00:54:17Z</date>
+    <groups>
+        <group>
+            <uuid>c998f140d3f8436c923aad88bd99a81a</uuid>
+            <name>Templates/ksc</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <uuid>5f0a1aec08394ab3a8cdbb208f14e3e7</uuid>
+            <template>Templates_Gerenciamento_Softwares_do_KSC_VIA_ODBC-versao-0.0.1</template>
+            <name>Templates_Gerenciamento_Softwares_do_KSC_VIA_ODBC-versao-0.0.1</name>
+            <groups>
+                <group>
+                    <name>Templates/ksc</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <uuid>48bb273b634545c29ee545560b51f7f4</uuid>
+                    <name>00- Descoberta raw gerenciamento de softwares no ksc</name>
+                    <type>ODBC</type>
+                    <key>db.odbc.get[descoberta-gerencimento-softwares,{$BANCO}]</key>
+                    <delay>30s</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <params>SELECT [wstrDisplayName]
+      ,[nDisplayNameId]
+      ,[ProdCount]
+      ,[wstrDisplayVersion]
+      ,[wstrPublisher]
+
+  FROM [KAV].[dbo].[v_invprod_dispname_grouping]</params>
+                    <username>{$USUARIO}</username>
+                    <password>{$SENHA}</password>
+                    <preprocessing>
+                        <step>
+                            <type>STR_REPLACE</type>
+                            <parameters>
+                                <parameter>null</parameter>
+                                <parameter>0</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <uuid>0ee0964537194c8ca10f150696f00412</uuid>
+                    <name>Total de softwares</name>
+                    <type>DEPENDENT</type>
+                    <key>Total.de.softwares</key>
+                    <delay>0</delay>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$[?(@.wstrDisplayName)].wstrDisplayName.length()</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>db.odbc.get[descoberta-gerencimento-softwares,{$BANCO}]</key>
+                    </master_item>
+                    <tags>
+                        <tag>
+                            <tag>Informacoes gerais</tag>
+                        </tag>
+                    </tags>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <uuid>52f92e04acb2496a9d57f2af32623d43</uuid>
+                    <name>00- Descoberta gerenciamento de softwares no ksc</name>
+                    <type>DEPENDENT</type>
+                    <key>Descoberta.gerenciamento.de.softwares.no.ksc</key>
+                    <delay>0</delay>
+                    <filter>
+                        <conditions>
+                            <condition>
+                                <macro>{#SOFT_NAME}</macro>
+                                <value>{$SOFTWARES_NAO_HOMOLOGADOS}</value>
+                                <operator>NOT_MATCHES_REGEX</operator>
+                                <formulaid>A</formulaid>
+                            </condition>
+                        </conditions>
+                    </filter>
+                    <lifetime>0d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>0ead4fd9b37144e991294c0229d13c27</uuid>
+                            <name>{#SOFT_NAME} versao: {#SOFT_VERSION}</name>
+                            <type>DEPENDENT</type>
+                            <key>Soft_ID[&quot;{#SOFT_ID}&quot;]</key>
+                            <delay>0</delay>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$[?(@.nDisplayNameId == '{#SOFT_ID}')].ProdCount.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>db.odbc.get[descoberta-gerencimento-softwares,{$BANCO}]</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Softwares do fabricante</tag>
+                                    <value>{#SOFT_FORN}</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                    </item_prototypes>
+                    <master_item>
+                        <key>db.odbc.get[descoberta-gerencimento-softwares,{$BANCO}]</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JAVASCRIPT</type>
+                            <parameters>
+                                <parameter>output = JSON.parse(value).map(function(net){
+      return {
+        &quot;{#SOFT_NAME}&quot;: net.wstrDisplayName,
+        &quot;{#SOFT_ID}&quot;: net.nDisplayNameId,
+        &quot;{#SOFT_VERSION}&quot;: net.wstrDisplayVersion,
+        &quot;{#SOFT_FORN}&quot;: net.wstrPublisher
+
+
+}})
+
+return JSON.stringify({&quot;data&quot;: output})</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </discovery_rule>
+                <discovery_rule>
+                    <uuid>3560f735fb2b45fb824cce07674242e8</uuid>
+                    <name>02- Descoberta gerenciamento de softwares no ksc nao homologados</name>
+                    <type>DEPENDENT</type>
+                    <key>Descoberta.gerenciamento.de.softwares.no.ksc.nao.homologados</key>
+                    <delay>0</delay>
+                    <filter>
+                        <conditions>
+                            <condition>
+                                <macro>{#SOFT_NAME}</macro>
+                                <value>{$SOFTWARES_NAO_HOMOLOGADOS}</value>
+                                <formulaid>A</formulaid>
+                            </condition>
+                        </conditions>
+                    </filter>
+                    <lifetime>0d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>71c0e1f337ae4623b78e79144c893fb3</uuid>
+                            <name>{#SOFT_NAME}</name>
+                            <type>DEPENDENT</type>
+                            <key>SOft.nao.homog.[&quot;{#SOFT_NAME}&quot;]</key>
+                            <delay>0</delay>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$[?(@.nDisplayNameId == '{#SOFT_ID}')].ProdCount.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>db.odbc.get[descoberta-gerencimento-softwares,{$BANCO}]</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Relacao de softwares nao homologados</tag>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                    </item_prototypes>
+                    <master_item>
+                        <key>db.odbc.get[descoberta-gerencimento-softwares,{$BANCO}]</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JAVASCRIPT</type>
+                            <parameters>
+                                <parameter>output = JSON.parse(value).map(function(net){
+      return {
+        &quot;{#SOFT_NAME}&quot;: net.wstrDisplayName,
+        &quot;{#SOFT_ID}&quot;: net.nDisplayNameId,
+        &quot;{#SOFT_VERSION}&quot;: net.wstrDisplayVersion,
+        &quot;{#SOFT_FORN}&quot;: net.wstrPublisher
+
+
+}})
+
+return JSON.stringify({&quot;data&quot;: output})</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </discovery_rule>
+                <discovery_rule>
+                    <uuid>93c471cfc48b4e30bf4db0dd638963de</uuid>
+                    <name>01- Descoberta de gerenciamento de softwares no ksc por fabricante</name>
+                    <type>DEPENDENT</type>
+                    <key>Descoberta.gerenciamento.de.softwares.no.ksc.por.fabricante</key>
+                    <delay>0</delay>
+                    <lifetime>0d</lifetime>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>eaa19d6989af421c903c782fa55aad5d</uuid>
+                            <name>{#SOFT_FORN}</name>
+                            <type>DEPENDENT</type>
+                            <key>Fornecedor.[&quot;{#SOFT_FORN}&quot;]</key>
+                            <delay>0</delay>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$[?(@.wstrPublisher == '{#SOFT_FORN}')].wstrPublisher.length()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>db.odbc.get[descoberta-gerencimento-softwares,{$BANCO}]</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Quantidade de softwares por fabricante</tag>
+                                    <value>{#SOFT_FORN}</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                    </item_prototypes>
+                    <master_item>
+                        <key>db.odbc.get[descoberta-gerencimento-softwares,{$BANCO}]</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JAVASCRIPT</type>
+                            <parameters>
+                                <parameter> try {
+
+    // Carrego o JSON do Zabbix
+    var dados = JSON.parse(value);
+    // Crio um objeto de encontrados
+    var encontrados = {};
+    // Crio um objeto de resultados
+    var resultado = [];
+
+    // Loop para cada item na lista de do JSON do Zabbix
+    for (var dado, indice = 0; dado = dados[indice++];) {
+        // Pego o Sistema Operacional para comparar
+        var os = dado.wstrPublisher;
+        // Converte Sistema Operacional com null
+        if (os === null)  {
+            os = &quot;Nao identificado&quot;
+        }      
+        // Se o Sistema Operacional não estiver na lista de encontrados
+        if (!(os in encontrados)) {
+            // Adiciono o Sistema Operacional na lista de encontrados
+            encontrados[os] = 1;
+            // Adiciono o Sistema Operacional na lista do LLD
+            resultado.push({&quot;{#SOFT_FORN}&quot;: os});
+        }
+    }
+
+    // Retorno a lista de Sistemas Operacionais
+    // únicos para o zabbix no formato do LLD
+    return JSON.stringify(resultado);
+
+} catch (error) {
+    Zabbix.Log(3, &quot;Mensagem de erro 'warning': &quot;+error);
+    return {};
+}
+</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </discovery_rule>
+            </discovery_rules>
+            <macros>
+                <macro>
+                    <macro>{$BANCO}</macro>
+                    <value>KSC</value>
+                </macro>
+                <macro>
+                    <macro>{$SENHA}</macro>
+                    <value>zabbix</value>
+                </macro>
+                <macro>
+                    <macro>{$SOFTWARES_NAO_HOMOLOGADOS}</macro>
+                    <value>^uTorrent|^Bytecoin|^Camtasia|^Amazon|^Python|McAfee</value>
+                </macro>
+                <macro>
+                    <macro>{$USUARIO}</macro>
+                    <value>zabbix</value>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>
